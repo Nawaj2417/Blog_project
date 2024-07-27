@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Your blog content here -->
+
+    <!-- section header -->
+    <div class="section-header">
+        <h3 class="section-title">Comments ({{ comments.count }})</h3>
+        <img src="images/wave.svg" class="wave" alt="wave" />
+    </div>
+
+    <!-- post comments -->
+    <div class="comments bordered padding-30 rounded">
+        <ul class="comments">
+            {% for comment in comments %}
+                <li class="comment rounded">
+                    <div class="thumb">
+                        <img src="images/other/comment-{{ forloop.counter }}.png" alt="{{ comment.name }}" />
+                    </div>
+                    <div class="details">
+                        <h4 class="name"><a href="#">{{ comment.name }}</a></h4>
+                        <span class="date">{{ comment.date }}</span>
+                        <p>{{ comment.comment }}</p>
+                        <a href="#" class="btn btn-default btn-sm" onclick="document.getElementById('parent_id').value='{{ comment.id }}';document.getElementById('comment-form').scrollIntoView();">Reply</a>
+                    </div>
+                    
+                    {% for reply in comment.replies.all %}
+                        <li class="comment child rounded">
+                            <div class="thumb">
+                                <img src="images/other/comment-{{ forloop.counter }}.png" alt="{{ reply.name }}" />
+                            </div>
+                            <div class="details">
+                                <h4 class="name"><a href="#">{{ reply.name }}</a></h4>
+                                <span class="date">{{ reply.date }}</span>
+                                <p>{{ reply.comment }}</p>
+                                <a href="#" class="btn btn-default btn-sm" onclick="document.getElementById('parent_id').value='{{ reply.id }}';document.getElementById('comment-form').scrollIntoView();">Reply</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="spacer" data-height="50"></div>
+
+    <!-- section header -->
+    <div class="section-header">
+        <h3 class="section-title">Leave Comment</h3>
+        <img src="images/wave.svg" class="wave" alt="wave" />
+    </div>
+
+    <!-- comment form -->
+    <div class="comment-form rounded bordered padding-30">
+        <form id="comment-form" action="{% url 'blog_detail' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="column col-md-12">
+                    <div class="form-group">
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Your comment here..." required></textarea>
+                    </div>
+                </div>
+                <div class="column col-md-6">
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Email address" required>
+                    </div>
+                </div>
+                <div class="column col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="website" placeholder="Website">
+                    </div>
+                </div>
+                <div class="column col-md-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" placeholder="Your name" required>
+                    </div>
+                </div>
+                <input type="hidden" name="parent_id" id="parent_id" value="{{post.id}}">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,435 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+	<!-- section main content -->
+	<section class="main-content mt-3">
+		<div class="container-xl">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{post.category}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{post.title}}</li>
+                </ol>
+            </nav>
+
+			<div class="row gy-4">
+
+				<div class="col-lg-8">
+					<!-- post single -->
+                    <div class="post post-single">
+						<!-- post header -->
+						<div class="post-header">
+							<h1 class="title mt-0 mb-3">{{post.title}}</h1>
+							<ul class="meta list-inline mb-0">
+								<li class="list-inline-item"><a href="#"><img src="{{post.image.url}}" class="author" alt="author"/>{{post.author}}</a></li>
+								<li class="list-inline-item"><a href="#">Trending</a></li>
+								<li class="list-inline-item">{{post.date}}</li>
+							</ul>
+						</div>
+						<!-- featured image -->
+						<div class="featured-image">
+							<img src="{{post.img.url}}" alt="post-title" />
+						</div>
+						<!-- post content -->
+						<div class="post-content clearfix">
+							<p>{{post.content}}</p>
+
+							<p>Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators. To achieve this, it <mark>would be</mark> necessary to have uniform grammar, pronunciation and more common words.</p>
+
+							<figure class="figure">
+								<img src="images/posts/post-lg-2.jpg" class="figure-img img-fluid rounded" alt="...">
+								<figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+							</figure>
+
+							<p>The languages only differ in their grammar, their pronunciation and their most common words. Everyone realizes why a new common language would be desirable.</p> 
+							
+							<img src="images/posts/single-sm-1.jpg" class="rounded alignleft" alt="...">
+							<p>{{post.content}}</p>
+						</div>
+						<!-- post bottom section -->
+						<div class="post-bottom">
+							<div class="row d-flex align-items-center">
+								<div class="col-md-6 col-12 text-center text-md-start">
+									<!-- tags -->
+									<a href="#" class="tag">#Trending</a>
+									<a href="#" class="tag">#Video</a>
+									<a href="#" class="tag">#Featured</a>
+								</div>
+								<div class="col-md-6 col-12">
+									<!-- social icons -->
+									<ul class="social-icons list-unstyled list-inline mb-0 float-md-end">
+										<li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+										<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+										<li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+										<li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+										<li class="list-inline-item"><a href="#"><i class="fab fa-telegram-plane"></i></a></li>
+										<li class="list-inline-item"><a href="#"><i class="far fa-envelope"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+                    </div>
+
+					<div class="spacer" data-height="50"></div>
+
+					<div class="about-author padding-30 rounded">
+						<div class="thumb">
+							<img src="images/other/avatar-about.png" alt="Katen Doe" />
+						</div>
+						<div class="details">
+							<h4 class="name"><a href="#">Katen Doe</a></h4>
+							<p>Hello, I’m a content writer who is fascinated by content fashion, celebrity and lifestyle. She helps clients bring the right content to the right people.</p>
+							<!-- social icons -->
+							<ul class="social-icons list-unstyled list-inline mb-0">
+								<li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-medium"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="spacer" data-height="50"></div>
+    <!-- section header -->
+    <div class="section-header">
+        <h3 class="section-title">Comments ({{ comments.count }})</h3>
+        <img src="images/wave.svg" class="wave" alt="wave" />
+    </div>
+
+    <!-- post comments -->
+    <div class="comments bordered padding-30 rounded">
+        <ul class="comments">
+            {% for comment in comments %}
+                <li class="comment rounded">
+                    <div class="thumb">
+                        <img src="images/other/comment-{{ forloop.counter }}.png" alt="{{ comment.name }}" />
+                    </div>
+                    <div class="details">
+                        <h4 class="name"><a href="#">{{ comment.name }}</a></h4>
+                        <span class="date">{{ comment.date }}</span>
+                        <p>{{ comment.comment }}</p>
+                        <a href="#" class="btn btn-default btn-sm" onclick="document.getElementById('parent_id').value='{{ comment.id }}';document.getElementById('comment-form').scrollIntoView();">Reply</a>
+                    </div>
+                    
+                    {% for reply in comment.replies.all %}
+                        <li class="comment child rounded">
+                            <div class="thumb">
+                                <img src="images/other/comment-{{ forloop.counter }}.png" alt="{{ reply.name }}" />
+                            </div>
+                            <div class="details">
+                                <h4 class="name"><a href="#">{{ reply.name }}</a></h4>
+                                <span class="date">{{ reply.date }}</span>
+                                <p>{{ reply.comment }}</p>
+                                <a href="#" class="btn btn-default btn-sm" onclick="document.getElementById('parent_id').value='{{ reply.id }}';document.getElementById('comment-form').scrollIntoView();">Reply</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="spacer" data-height="50"></div>
+
+    <!-- section header -->
+    <div class="section-header">
+        <h3 class="section-title">Leave Comment</h3>
+        <img src="images/wave.svg" class="wave" alt="wave" />
+    </div>
+
+    <!-- comment form -->
+    <div class="comment-form rounded bordered padding-30">
+        <form id="comment-form" action="{% url 'add_comment' post.blog_slug %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="column col-md-12">
+                    <div class="form-group">
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Your comment here..." required></textarea>
+                    </div>
+                </div>
+                <div class="column col-md-6">
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Email address" required>
+                    </div>
+                </div>
+                <div class="column col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="website" placeholder="Website">
+                    </div>
+                </div>
+                <div class="column col-md-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" placeholder="Your name" required>
+                    </div>
+                </div>
+                <!-- Hidden field for blog post ID -->
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <input type="hidden" name="parent_id" id="parent_id" value="">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        
+					</div>
+                </div>
+
+				<div class="col-lg-4">
+
+					<!-- sidebar -->
+					<div class="sidebar">
+						<!-- widget about -->
+						<div class="widget rounded">
+							<div class="widget-about data-bg-image text-center" data-bg-image="images/map-bg.png">
+								<img src="images/logo.svg" alt="logo" class="mb-4" />
+								<p class="mb-4">Hello, We’re content writer who is fascinated by content fashion, celebrity and lifestyle. We helps clients bring the right content to the right people.</p>
+								<ul class="social-icons list-unstyled list-inline mb-0">
+									<li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+									<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+									<li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+									<li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+									<li class="list-inline-item"><a href="#"><i class="fab fa-medium"></i></a></li>
+									<li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- widget popular posts -->
+						<div class="widget rounded">
+							<div class="widget-header text-center">
+								<h3 class="widget-title">Popular Posts</h3>
+								<img src="images/wave.svg" class="wave" alt="wave" />
+							</div>
+							<div class="widget-content">
+								<!-- post -->
+								<div class="post post-list-sm circle">
+									<div class="thumb circle">
+										<span class="number">1</span>
+										<a href="blog-single.html">
+											<div class="inner">
+												<img src="images/posts/tabs-1.jpg" alt="post-title" />
+											</div>
+										</a>
+									</div>
+									<div class="details clearfix">
+										<h6 class="post-title my-0"><a href="blog-single.html">3 Easy Ways To Make Your iPhone Faster</a></h6>
+										<ul class="meta list-inline mt-1 mb-0">
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+								</div>
+								<!-- post -->
+								<div class="post post-list-sm circle">
+									<div class="thumb circle">
+										<span class="number">2</span>
+										<a href="blog-single.html">
+											<div class="inner">
+												<img src="images/posts/tabs-2.jpg" alt="post-title" />
+											</div>
+										</a>
+									</div>
+									<div class="details clearfix">
+										<h6 class="post-title my-0"><a href="blog-single.html">An Incredibly Easy Method That Works For All</a></h6>
+										<ul class="meta list-inline mt-1 mb-0">
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+								</div>
+								<!-- post -->
+								<div class="post post-list-sm circle">
+									<div class="thumb circle">
+										<span class="number">3</span>
+										<a href="blog-single.html">
+											<div class="inner">
+												<img src="images/posts/tabs-3.jpg" alt="post-title" />
+											</div>
+										</a>
+									</div>
+									<div class="details clearfix">
+										<h6 class="post-title my-0"><a href="blog-single.html">10 Ways To Immediately Start Selling Furniture</a></h6>
+										<ul class="meta list-inline mt-1 mb-0">
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+								</div>
+							</div>		
+						</div>
+
+						<!-- widget categories -->
+						<div class="widget rounded">
+							<div class="widget-header text-center">
+								<h3 class="widget-title">Explore Topics</h3>
+								<img src="images/wave.svg" class="wave" alt="wave" />
+							</div>
+							<div class="widget-content">
+								<ul class="list">
+									<li><a href="#">Lifestyle</a><span>(5)</span></li>
+									<li><a href="#">Inspiration</a><span>(2)</span></li>
+									<li><a href="#">Fashion</a><span>(4)</span></li>
+									<li><a href="#">Politic</a><span>(1)</span></li>
+									<li><a href="#">Trending</a><span>(7)</span></li>
+									<li><a href="#">Culture</a><span>(3)</span></li>
+								</ul>
+							</div>
+							
+						</div>
+
+						<!-- widget newsletter -->
+						<div class="widget rounded">
+							<div class="widget-header text-center">
+								<h3 class="widget-title">Newsletter</h3>
+								<img src="images/wave.svg" class="wave" alt="wave" />
+							</div>
+							<div class="widget-content">
+								<span class="newsletter-headline text-center mb-3">Join 70,000 subscribers!</span>
+								<form>
+									<div class="mb-2">
+										<input class="form-control w-100 text-center" placeholder="Email address…" type="email">
+									</div>
+									<button class="btn btn-default btn-full" type="submit">Sign Up</button>
+								</form>
+								<span class="newsletter-privacy text-center mt-3">By signing up, you agree to our <a href="#">Privacy Policy</a></span>
+							</div>		
+						</div>
+
+						<!-- widget post carousel -->
+						<div class="widget rounded">
+							<div class="widget-header text-center">
+								<h3 class="widget-title">Celebration</h3>
+								<img src="images/wave.svg" class="wave" alt="wave" />
+							</div>
+							<div class="widget-content">
+								<div class="post-carousel-widget">
+									<!-- post -->
+									<div class="post post-carousel">
+										<div class="thumb rounded">
+											<a href="category.html" class="category-badge position-absolute">How to</a>
+											<a href="blog-single.html">
+												<div class="inner">
+													<img src="images/widgets/widget-carousel-1.jpg" alt="post-title" />
+												</div>
+											</a>
+										</div>
+										<h5 class="post-title mb-0 mt-4"><a href="blog-single.html">5 Easy Ways You Can Turn Future Into Success</a></h5>
+										<ul class="meta list-inline mt-2 mb-0">
+											<li class="list-inline-item"><a href="#">Katen Doe</a></li>
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+									<!-- post -->
+									<div class="post post-carousel">
+										<div class="thumb rounded">
+											<a href="category.html" class="category-badge position-absolute">Trending</a>
+											<a href="blog-single.html">
+												<div class="inner">
+													<img src="images/widgets/widget-carousel-2.jpg" alt="post-title" />
+												</div>
+											</a>
+										</div>
+										<h5 class="post-title mb-0 mt-4"><a href="blog-single.html">Master The Art Of Nature With These 7 Tips</a></h5>
+										<ul class="meta list-inline mt-2 mb-0">
+											<li class="list-inline-item"><a href="#">Katen Doe</a></li>
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+									<!-- post -->
+									<div class="post post-carousel">
+										<div class="thumb rounded">
+											<a href="category.html" class="category-badge position-absolute">How to</a>
+											<a href="blog-single.html">
+												<div class="inner">
+													<img src="images/widgets/widget-carousel-1.jpg" alt="post-title" />
+												</div>
+											</a>
+										</div>
+										<h5 class="post-title mb-0 mt-4"><a href="blog-single.html">5 Easy Ways You Can Turn Future Into Success</a></h5>
+										<ul class="meta list-inline mt-2 mb-0">
+											<li class="list-inline-item"><a href="#">Katen Doe</a></li>
+											<li class="list-inline-item">29 March 2021</li>
+										</ul>
+									</div>
+								</div>
+								<!-- carousel arrows -->
+								<div class="slick-arrows-bot">
+									<button type="button" data-role="none" class="carousel-botNav-prev slick-custom-buttons" aria-label="Previous"><i class="icon-arrow-left"></i></button>
+									<button type="button" data-role="none" class="carousel-botNav-next slick-custom-buttons" aria-label="Next"><i class="icon-arrow-right"></i></button>
+								</div>
+							</div>		
+						</div>
+
+						<!-- widget advertisement -->
+						<div class="widget no-container rounded text-md-center">
+							<span class="ads-title">- Sponsored Ad -</span>
+							<a href="#" class="widget-ads">
+								<img src="images/ads/ad-360.png" alt="Advertisement" />	
+							</a>
+						</div>
+
+						<!-- widget tags -->
+						<div class="widget rounded">
+							<div class="widget-header text-center">
+								<h3 class="widget-title">Tag Clouds</h3>
+								<img src="images/wave.svg" class="wave" alt="wave" />
+							</div>
+							<div class="widget-content">
+								<a href="#" class="tag">#Trending</a>
+								<a href="#" class="tag">#Video</a>
+								<a href="#" class="tag">#Featured</a>
+								<a href="#" class="tag">#Gallery</a>
+								<a href="#" class="tag">#Celebrities</a>
+							</div>		
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+	<!-- instagram feed -->
+	<div class="instagram">
+		<div class="container-xl">
+			<!-- button -->
+			<a href="#" class="btn btn-default btn-instagram">@Katen on Instagram</a>
+			<!-- images -->
+			<div class="instagram-feed d-flex flex-wrap">
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-1.jpg" alt="insta-title" />
+					</a>
+				</div>
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-2.jpg" alt="insta-title" />
+					</a>
+				</div>
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-3.jpg" alt="insta-title" />
+					</a>
+				</div>
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-4.jpg" alt="insta-title" />
+					</a>
+				</div>
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-5.jpg" alt="insta-title" />
+					</a>
+				</div>
+				<div class="insta-item col-sm-2 col-6 col-md-2">
+					<a href="#">
+						<img src="images/insta/insta-6.jpg" alt="insta-title" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock body %}
